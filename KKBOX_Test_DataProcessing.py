@@ -1,13 +1,13 @@
 
 # coding: utf-8
 
-# In[5]:
+# In[55]:
 
 
 import pandas as pd
 
 
-# In[6]:
+# In[56]:
 
 
 train=pd.read_csv("train.csv")
@@ -29,7 +29,7 @@ test["gender"]=test["gender"].map({'male':1,'female':2})
 test["gender"]=test["gender"].fillna(0)
 
 
-# In[7]:
+# In[57]:
 
 
 train["registration_init_time"] = pd.to_datetime(train["registration_init_time"],format='%Y%m%d')
@@ -64,7 +64,7 @@ test["expiration_date_dayofweek"] = test["expiration_date"].dt.dayofweek
 test=test.drop(["expiration_date"], axis=1)
 
 
-# In[8]:
+# In[58]:
 
 
 temp=pd.concat([train['source_system_tab'],test['source_system_tab']],axis=0)
@@ -78,7 +78,7 @@ train["source_system_tab"]=train["source_system_tab"].fillna(0)
 test["source_system_tab"]=test["source_system_tab"].fillna(0)
 
 
-# In[9]:
+# In[59]:
 
 
 temp=pd.concat([train['source_screen_name'],test['source_screen_name']],axis=0)
@@ -92,7 +92,7 @@ train["source_screen_name"]=train["source_screen_name"].fillna(0)
 test["source_screen_name"]=test["source_screen_name"].fillna(0)
 
 
-# In[10]:
+# In[60]:
 
 
 temp=pd.concat([train['source_type'],test['source_type']],axis=0)
@@ -106,7 +106,7 @@ train["source_type"]=train["source_type"].fillna(0)
 test["source_type"]=test["source_type"].fillna(0)
 
 
-# In[11]:
+# In[61]:
 
 
 temp=pd.concat([train['song_id'],test['song_id']],axis=0)
@@ -120,7 +120,7 @@ train["song_id"]=train["song_id"].fillna(0)
 test["song_id"]=test["song_id"].fillna(0)
 
 
-# In[12]:
+# In[62]:
 
 
 temp=pd.concat([train['msno'],test['msno']],axis=0)
@@ -134,7 +134,7 @@ train["msno"]=train["msno"].fillna(0)
 test["msno"]=test["msno"].fillna(0)
 
 
-# In[13]:
+# In[63]:
 
 
 temp=pd.concat([train['artist_name'],test['artist_name']],axis=0)
@@ -148,7 +148,7 @@ train["artist_name"]=train["artist_name"].fillna(0)
 test["artist_name"]=test["artist_name"].fillna(0)
 
 
-# In[14]:
+# In[64]:
 
 
 temp=pd.concat([train['composer'],test['composer']],axis=0)
@@ -162,7 +162,7 @@ train["composer"]=train["composer"].fillna(0)
 test["composer"]=test["composer"].fillna(0)
 
 
-# In[15]:
+# In[65]:
 
 
 temp=pd.concat([train['genre_ids'],test['genre_ids']],axis=0)
@@ -176,7 +176,7 @@ train["genre_ids"]=train["genre_ids"].fillna(0)
 test["genre_ids"]=test["genre_ids"].fillna(0)
 
 
-# In[16]:
+# In[66]:
 
 
 temp=pd.concat([train['lyricist'],test['lyricist']],axis=0)
@@ -190,14 +190,16 @@ train["lyricist"]=train["lyricist"].fillna(0)
 test["lyricist"]=test["lyricist"].fillna(0)
 
 
-# In[17]:
+# In[67]:
 
 
-target=train['target']
+column_list=list(train.columns.values)
+column_list.remove('target')
+target=train.drop(column_list, axis=1)
 train=train.drop(["target"], axis=1)
 
 
-# In[18]:
+# In[68]:
 
 
 train.to_csv("data_processed/train.csv", encoding='utf_8_sig')

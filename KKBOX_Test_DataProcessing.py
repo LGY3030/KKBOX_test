@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python
 # coding: utf-8
 
 # In[55]:
@@ -10,19 +10,20 @@ import pandas as pd
 # In[56]:
 
 
+#讀取檔案
 train=pd.read_csv("train.csv")
 test=pd.read_csv("test.csv", index_col=0)
 songs=pd.read_csv("songs.csv")
 members=pd.read_csv("members.csv")
 song_extra_info=pd.read_csv("song_extra_info.csv")
 
-
+#將資料合在一起並改變gender的資料
 train=train.merge(songs, on='song_id', how='left')
 train=train.merge(members, on='msno', how='left')
 train["gender"]=train["gender"].map({'male':1,'female':2})
 train["gender"]=train["gender"].fillna(0)
 
-
+#將資料合在一起並改變gender的資料
 test=test.merge(songs, on='song_id', how='left')
 test=test.merge(members, on='msno', how='left')
 test["gender"]=test["gender"].map({'male':1,'female':2})
@@ -31,6 +32,8 @@ test["gender"]=test["gender"].fillna(0)
 
 # In[57]:
 
+
+#改變時間的呈現形式
 
 train["registration_init_time"] = pd.to_datetime(train["registration_init_time"],format='%Y%m%d')
 train["registration_init_time_year"] = train["registration_init_time"].dt.year
@@ -67,6 +70,7 @@ test=test.drop(["expiration_date"], axis=1)
 # In[58]:
 
 
+#將source_system_tab的資料重新整理
 temp=pd.concat([train['source_system_tab'],test['source_system_tab']],axis=0)
 temp = temp.value_counts().rename_axis('source_system_tab').reset_index(name='Number')
 mapmap={}
@@ -81,6 +85,7 @@ test["source_system_tab"]=test["source_system_tab"].fillna(0)
 # In[59]:
 
 
+#將source_screen_name的資料重新整理
 temp=pd.concat([train['source_screen_name'],test['source_screen_name']],axis=0)
 temp = temp.value_counts().rename_axis('source_screen_name').reset_index(name='Number')
 mapmap={}
@@ -95,6 +100,7 @@ test["source_screen_name"]=test["source_screen_name"].fillna(0)
 # In[60]:
 
 
+#將source_type的資料重新整理
 temp=pd.concat([train['source_type'],test['source_type']],axis=0)
 temp = temp.value_counts().rename_axis('source_type').reset_index(name='Number')
 mapmap={}
@@ -109,6 +115,7 @@ test["source_type"]=test["source_type"].fillna(0)
 # In[61]:
 
 
+#將song_id的資料重新整理
 temp=pd.concat([train['song_id'],test['song_id']],axis=0)
 temp = temp.value_counts().rename_axis('song_id').reset_index(name='Number')
 mapmap={}
@@ -123,6 +130,7 @@ test["song_id"]=test["song_id"].fillna(0)
 # In[62]:
 
 
+#將msno的資料重新整理
 temp=pd.concat([train['msno'],test['msno']],axis=0)
 temp = temp.value_counts().rename_axis('msno').reset_index(name='Number')
 mapmap={}
@@ -137,6 +145,7 @@ test["msno"]=test["msno"].fillna(0)
 # In[63]:
 
 
+#將artist_name的資料重新整理
 temp=pd.concat([train['artist_name'],test['artist_name']],axis=0)
 temp = temp.value_counts().rename_axis('artist_name').reset_index(name='Number')
 mapmap={}
@@ -151,6 +160,7 @@ test["artist_name"]=test["artist_name"].fillna(0)
 # In[64]:
 
 
+#將composer的資料重新整理
 temp=pd.concat([train['composer'],test['composer']],axis=0)
 temp = temp.value_counts().rename_axis('composer').reset_index(name='Number')
 mapmap={}
@@ -165,6 +175,7 @@ test["composer"]=test["composer"].fillna(0)
 # In[65]:
 
 
+#將genre_ids的資料重新整理
 temp=pd.concat([train['genre_ids'],test['genre_ids']],axis=0)
 temp = temp.value_counts().rename_axis('genre_ids').reset_index(name='Number')
 mapmap={}
@@ -179,6 +190,7 @@ test["genre_ids"]=test["genre_ids"].fillna(0)
 # In[66]:
 
 
+#將lyricist的資料重新整理
 temp=pd.concat([train['lyricist'],test['lyricist']],axis=0)
 temp = temp.value_counts().rename_axis('lyricist').reset_index(name='Number')
 mapmap={}
@@ -193,6 +205,7 @@ test["lyricist"]=test["lyricist"].fillna(0)
 # In[67]:
 
 
+#分開target和features
 column_list=list(train.columns.values)
 column_list.remove('target')
 target=train.drop(column_list, axis=1)
@@ -202,7 +215,14 @@ train=train.drop(["target"], axis=1)
 # In[68]:
 
 
+#儲存檔案
 train.to_csv("data_processed/train.csv", encoding='utf_8_sig')
 test.to_csv("data_processed/test.csv", encoding='utf_8_sig')
 target.to_csv("data_processed/target.csv", encoding='utf_8_sig')
+
+
+# In[ ]:
+
+
+
 
